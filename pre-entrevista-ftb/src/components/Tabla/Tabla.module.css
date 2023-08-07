@@ -18,3 +18,10 @@ table.customTable td, table.customTable th {
 table.customTable thead {
   background-color: #7EA8F8;
 }
+
+.mensajeDataVacia {
+  font-size: 22px;
+  color: #666;
+  margin-top: 10px;
+  border: 2px solid red;
+}

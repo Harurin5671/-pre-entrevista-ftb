@@ -1,0 +1,44 @@
+.readerContainer {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.readerHeader {
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.headerTitle {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+.csvReaderSection {
+  margin-bottom: 20px;
+  border: 2px solid red;
+  gap: 15px;
+}
+
+.csvDataSection {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.dataTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
