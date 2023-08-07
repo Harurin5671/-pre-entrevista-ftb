@@ -28,7 +28,7 @@ app.get('/tipo-cambio-fecha/:fecha', (req, res) => {
       res.json(tipoCambioSunat);
     })
     .catch((error) => {
-      console.error('Error fetching tipo de cambio:', error);
+      console.error('Error fetching tipo de cambio:', error.stack);
       res.status(500).json({ error: 'Error fetching tipo de cambio' });
     });
 });

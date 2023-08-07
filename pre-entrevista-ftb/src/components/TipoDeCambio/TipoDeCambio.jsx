@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TipoCambio = () => {
+const TipoDeCambio = () => {
   const [tipoCambio, setTipoCambio] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,4 +44,4 @@ const TipoCambio = () => {
   );
 };
 
-export default TipoCambio;
+export default TipoDeCambio;

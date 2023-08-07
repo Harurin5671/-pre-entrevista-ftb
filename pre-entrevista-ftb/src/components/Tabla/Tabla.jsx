@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Editar from '../Editar/Editar.jsx'
 import styles from './Tabla.module.css'
 
@@ -8,15 +9,44 @@ const tipo_cambio = [
   { fecha: '2023-05-28', venta: 3.675, compra: 3.671 },
   { fecha: '2023-05-29', venta: 3.678, compra: 3.674 },
   { fecha: '2023-05-30', venta: 3.68, compra: 3.667 },
+  { fecha: '2023-05-01', venta: 3.711, compra: 3.719 }
 ]
 
 export default function Tabla({ data, setData }) {
   const [USD, setUSD] = useState(true)
   const [editar, setEditar] = useState(false)
   const [editingData, setEditingData] = useState(null)
+  const [cambioFecha, setCambioFecha] = useState([])
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const fechas = data.map((d) => d.fecha);
+
+      Promise.all(
+        fechas.map((fecha, index) =>
+          new Promise((resolve) => setTimeout(resolve, index * 500))
+            .then(() => axios.get(`http://localhost:3000/tipo-cambio-fecha/${fecha}`))
+            .then((response) => ({
+              fecha: fecha,
+              ...response.data
+            }))
+        )
+      )
+        .then((responses) => {
+          setLoading(false);
+          setCambioFecha(responses); // Store the responses in the array
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error('Error fetching tipo de cambio:', error);
+        });
+    }
+  }, [data]);
+  
 
   const cambioMoneda = (moneda) => {
-    if (USD) {
+    if (cambioFecha.length > 0 ) {
       return moneda !== 'PEN' ? 'PEN' : moneda
     }
     return moneda
@@ -35,9 +65,9 @@ export default function Tabla({ data, setData }) {
     const montoAbsoluto = Math.abs(monto)
     const signo = monto < 0 ? '-' : ''
 
-    if (moneda !== 'PEN') {
-      const cambioActual = tipo_cambio.find((t) => t.fecha === fecha)
-      const montoEnSoles = (montoAbsoluto * cambioActual.compra).toFixed(2)
+    if (moneda !== 'PEN' && cambioFecha.length > 0) {
+      const cambioActual = cambioFecha.find((t) => t.fecha === fecha)
+      const montoEnSoles = (montoAbsoluto * cambioActual.precioCompra).toFixed(2)
       return `${signo}${montoEnSoles}`
     } else {
       return `${signo}${montoAbsoluto}`
