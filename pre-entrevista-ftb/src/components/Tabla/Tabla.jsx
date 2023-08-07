@@ -10,9 +10,10 @@ const tipo_cambio = [
   { fecha: '2023-05-30', venta: 3.68, compra: 3.667 },
 ]
 
-export default function Tabla({ data }) {
+export default function Tabla({ data, setData }) {
   const [USD, setUSD] = useState(true)
   const [editar, setEditar] = useState(false)
+  const [editingData, setEditingData] = useState(null)
 
   const cambioMoneda = (moneda) => {
     if (USD) {
@@ -21,7 +22,8 @@ export default function Tabla({ data }) {
     return moneda
   }
 
-  const abrirEditor = () => {
+  const abrirEditor = (item) => {
+    setEditingData(item)
     setEditar(true)
   }
 
@@ -31,10 +33,6 @@ export default function Tabla({ data }) {
 
   const convertirAPen = (moneda, monto, fecha) => {
     const montoAbsoluto = Math.abs(monto)
-    console.log(
-      '🚀 ~ file: Tabla.jsx:35 ~ convertirAPen ~ montoAbsoluto:',
-      montoAbsoluto
-    )
     const signo = monto < 0 ? '-' : ''
 
     if (moneda !== 'PEN') {
@@ -81,14 +79,15 @@ export default function Tabla({ data }) {
                   {USD
                     ? convertirAPen(m.moneda, m.monto, m.fecha)
                     : convertirAUsd(m.moneda, m.monto, m.fecha)}
-                  <button
-                    onClick={() => convertirAPen(m.moneda, m.monto, m.fecha)}
-                  >
-                    Editar
-                  </button>
-                  {editar ? (
-                    <Editar abrirEditor={editar} cerrarEditor={cerrarEditor} />
-                  ) : null}
+                  <button onClick={() => abrirEditor(m)}>Editar</button>
+                  {editar && editingData && (
+                    <Editar
+                      abrirEditor={editar}
+                      cerrarEditor={cerrarEditor}
+                      data={editingData}
+                      setData={setData}
+                    />
+                  )}
                   <button>Eliminar</button>
                 </td>
               </tr>
