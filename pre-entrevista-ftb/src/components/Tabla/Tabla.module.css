@@ -1,26 +1,93 @@
-table.customTable {
-  width: 100%;
-  background-color: #FFFFFF;
+/* Tabla.module.css */
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600');
+
+.customTable {
+  background: #012B39;
+  border-radius: 0.25em;
   border-collapse: collapse;
-  border-width: 2px;
-  border-color: #7EA8F8;
-  border-style: solid;
-  color: #000000;
+  margin: 1em;
+  width: 100%;
 }
 
-table.customTable td, table.customTable th {
-  border-width: 2px;
-  border-color: #7EA8F8;
-  border-style: solid;
-  padding: 5px;
+.customTable th {
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size:1.4em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+  text-align: center;
 }
 
-table.customTable thead {
-  background-color: #7EA8F8;
+.customTable td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
 }
 
-.mensajeDataVacia {
-  font-size: 22px;
-  color: #666;
+.customTable .disabled td {
+  color: #4F5F64;
+}
+
+.customTable tbody tr {
+  transition: background 0.25s ease;
+}
+
+.customTable tbody tr:hover {
+  background: #014055;
+}
+
+.downloadButton {
   margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+.eliminar:hover,
+.eliminar:focus {
+  box-shadow: inset -5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover);
+}
+
+.editar:hover,
+.editar:focus {
+  box-shadow: inset 7em 0 0 0 var(--hover);
+}
+
+.eliminar {
+  --color: #ff7f82;
+  --hover: #fa5c5c;
+}
+
+.editar {
+  --color: #8fc866;
+  --hover: #66c887;
+}
+
+button {
+  color: var(--color);
+  transition: 0.25s;
+}
+button:hover,
+button:focus {
+  border-color: var(--hover);
+  color: #fff;
+}
+
+button {
+  background: none;
+  border: 2px solid;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 0.5em 1em;
 }

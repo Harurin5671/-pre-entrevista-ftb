@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './TipoDeCambio.module.css'; // Asegúrate de ajustar la ruta
 
 const TipoDeCambio = () => {
   const [tipoCambio, setTipoCambio] = useState(null);
@@ -19,11 +20,11 @@ const TipoDeCambio = () => {
 
   return (
     <div>
-      <h2>Tipo de Cambio SUNAT</h2>
+      <h2 className={styles.title}>Tipo de Cambio SUNAT</h2>
       {loading ? (
-        <p>Cargando tipo de cambio...</p>
+        <p className={styles.loading}>Cargando tipo de cambio...</p>
       ) : (
-        <table>
+        <table className={styles.customTable}>
           <thead>
             <tr>
               <th>Moneda</th>

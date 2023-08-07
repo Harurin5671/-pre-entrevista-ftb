@@ -3,7 +3,8 @@ const axios = require('axios')
 const app = express()
 const PORT = 3000
 
-const token = 'apis-token-5145.6AoBs1koRsVKgvQGZ7xF1YEQ7Dz4CfnH'
+// const token = 'apis-token-5145.6AoBs1koRsVKgvQGZ7xF1YEQ7Dz4CfnH'
+const token = 'apis-token-5150.2eVeo3OCsFngC5pHqPfYenNQ6VZqtWCt'
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*') // Cambia esto al dominio real de tu frontend
@@ -13,7 +14,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/tipo-cambio-fecha/:fecha', (req, res) => {
-  const fecha = req.params.fecha;
+  const fecha = req.params.fecha
 
   axios({
     method: 'GET',
@@ -24,14 +25,14 @@ app.get('/tipo-cambio-fecha/:fecha', (req, res) => {
     },
   })
     .then((response) => {
-      const tipoCambioSunat = response.data;
-      res.json(tipoCambioSunat);
+      const tipoCambioSunat = response.data
+      res.json(tipoCambioSunat)
     })
     .catch((error) => {
-      console.error('Error fetching tipo de cambio:', error.stack);
-      res.status(500).json({ error: 'Error fetching tipo de cambio' });
-    });
-});
+      console.error('Error fetching tipo de cambio:', error.stack)
+      res.status(500).json({ error: 'Error fetching tipo de cambio' })
+    })
+})
 
 app.get('/tipo-cambio', (req, res) => {
   axios({

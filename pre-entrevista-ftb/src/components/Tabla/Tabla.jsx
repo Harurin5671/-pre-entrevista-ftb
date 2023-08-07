@@ -20,7 +20,7 @@ export default function Tabla({ data, setData }) {
 
       Promise.all(
         fechas.map((fecha, index) =>
-          new Promise((resolve) => setTimeout(resolve, index * 600))
+          new Promise((resolve) => setTimeout(resolve, index * 800))
             .then(() =>
               axios.get(`http://localhost:3000/tipo-cambio-fecha/${fecha}`)
             )
@@ -70,9 +70,9 @@ export default function Tabla({ data, setData }) {
   }
 
   const eliminarCampo = (codigo) => {
-    const newData = data.filter((item) => item.codigo_unico !== codigo);
-    setData(newData);
-  };
+    const newData = data.filter((item) => item.codigo_unico !== codigo)
+    setData(newData)
+  }
 
   const convertirAPen = (moneda, monto, fecha) => {
     const montoAbsoluto = Math.abs(monto)
@@ -87,6 +87,35 @@ export default function Tabla({ data, setData }) {
     } else {
       return `${signo}${montoAbsoluto}`
     }
+  }
+
+  const generarContenidoCSV = () => {
+    let contenido = 'fecha,descripcion,moneda,monto,codigo_unico\n'
+
+    for (const m of data) {
+      const fecha = m.fecha
+      const descripcion = m.descripcion
+      const moneda = USD ? cambioMoneda(m.moneda) : m.moneda
+      const monto = USD
+        ? convertirAPen(m.moneda, m.monto, m.fecha)
+        : convertirAUsd(m.moneda, m.monto, m.fecha)
+      const codigo_unico = m.codigo_unico
+
+      contenido += `${fecha},"${descripcion}",${moneda},${monto},${codigo_unico}\n`
+    }
+
+    return contenido
+  }
+
+  const descargarCSV = () => {
+    const contenido = generarContenidoCSV()
+    const blob = new Blob([contenido], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'tabla.csv'
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   const convertirAUsd = (moneda, monto, fecha) => {
@@ -105,27 +134,31 @@ export default function Tabla({ data, setData }) {
   return (
     <>
       {data && data.length > 0 ? (
-        <table className={styles.customTable}>
-          <thead>
-            <tr>
-              <th>FECHA</th>
-              <th>DESCRIPCIÓN</th>
-              <th>MONEDA</th>
-              <th>MONTO</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((m) => (
-              <tr key={m.codigo_unico}>
-                <td>{m.fecha}</td>
-                <td>{m.descripcion}</td>
-                <td>{USD ? cambioMoneda(m.moneda) : m.moneda}</td>
-                <td>
-                  {USD
-                    ? convertirAPen(m.moneda, m.monto, m.fecha)
-                    : convertirAUsd(m.moneda, m.monto, m.fecha)}
-                  <button onClick={() => abrirEditor(m)}>Editar</button>
-                  {editar && editingData && (
+        <>
+          <table className={styles.customTable}>
+            <thead>
+              <tr>
+                <th>FECHA</th>
+                <th>DESCRIPCIÓN</th>
+                <th>MONEDA</th>
+                <th>MONTO</th>
+                <th>ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((m) => (
+                <tr key={m.codigo_unico}>
+                  <td>{m.fecha}</td>
+                  <td>{m.descripcion}</td>
+                  <td>{USD ? cambioMoneda(m.moneda) : m.moneda}</td>
+                  <td>
+                    {USD
+                      ? convertirAPen(m.moneda, m.monto, m.fecha)
+                      : convertirAUsd(m.moneda, m.monto, m.fecha)}
+                  </td>
+                  <td>
+                    <button className={styles.editar} onClick={() => abrirEditor(m)}>Editar</button>
+                    {editar && editingData && (
                     <Editar
                       abrirEditor={editar}
                       cerrarEditor={cerrarEditor}
@@ -133,12 +166,18 @@ export default function Tabla({ data, setData }) {
                       setData={setData}
                     />
                   )}
-                  <button onClick={() => eliminarCampo(m.codigo_unico)}>Eliminar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <button className={styles.eliminar} onClick={() => eliminarCampo(m.codigo_unico)}>
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button className={styles.downloadButton} onClick={descargarCSV}>
+            Descargar CSV
+          </button>
+        </>
       ) : (
         <p className={styles.mensajeDataVacia}>
           Por favor, carga el archivo antes de mostrar la tabla.
