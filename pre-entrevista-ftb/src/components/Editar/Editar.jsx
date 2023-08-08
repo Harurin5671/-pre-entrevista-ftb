@@ -4,11 +4,11 @@ import styles from './Editar.module.css'
 
 export default function Editar({ abrirEditor, cerrarEditor, data, setData }) {
   const [editedData, setEditedData] = useState({
-    fecha: new Date().toISOString().split('T')[0], // Inicializar con la fecha actual
-    descripcion: data.descripcion || '',
-    moneda: data.moneda || 'PEN', // Valor por defecto 'PEN'
-    monto: data.monto || '',
-  })
+    fecha: new Date().toISOString().split('T')[0],
+    descripcion: '',
+    moneda: 'PEN',
+    monto: '',
+  });
 
   if (!abrirEditor) return null
 
@@ -94,6 +94,7 @@ export default function Editar({ abrirEditor, cerrarEditor, data, setData }) {
     <div className={styles.overlay}>
       <div className={styles.loginBox}>
         <h2>Editar:</h2>
+        <span className={styles.btnClose} onClick={cerrarEditor}>X</span>
         <form>
           <div className={styles.userBox}>
             <input
@@ -114,7 +115,7 @@ export default function Editar({ abrirEditor, cerrarEditor, data, setData }) {
             <label>Descripción:</label>
           </div>
           <div>
-          <label>Moneda:</label>
+            <label>Moneda:</label>
             <select
               name="moneda"
               value={editedData.moneda}

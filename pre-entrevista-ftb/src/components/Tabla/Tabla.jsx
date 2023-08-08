@@ -152,6 +152,9 @@ export default function Tabla({ data, setData }) {
                       : convertirAUsd(m.moneda, m.monto, m.fecha)}
                   </td>
                   <td>
+                    <button>
+                      USD
+                    </button>
                     <button
                       className={styles.editar}
                       onClick={() => abrirEditor(m)}
