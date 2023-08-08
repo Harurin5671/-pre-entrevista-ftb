@@ -19,7 +19,7 @@ const TipoDeCambio = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.tipoCambioContainer}>
       <h2 className={styles.title}>Tipo de Cambio SUNAT</h2>
       {loading ? (
         <p className={styles.loading}>Cargando tipo de cambio...</p>

@@ -27,7 +27,7 @@ export default function Tabla({ data, setData }) {
 
       Promise.all(
         fechasUnicas.map((fecha, index) =>
-          new Promise((resolve) => setTimeout(resolve, index * 400))
+          new Promise((resolve) => setTimeout(resolve, index * 800))
             .then(() =>
               axios.get(`http://localhost:3000/tipo-cambio-fecha/${fecha}`)
             )
@@ -39,7 +39,7 @@ export default function Tabla({ data, setData }) {
       )
         .then((responses) => {
           setLoading(false)
-          setCambioFecha(responses) // Utilizamos directamente las respuestas
+          setCambioFecha(responses)
         })
         .catch((error) => {
           setLoading(false)
@@ -152,9 +152,6 @@ export default function Tabla({ data, setData }) {
                       : convertirAUsd(m.moneda, m.monto, m.fecha)}
                   </td>
                   <td>
-                    <button>
-                      USD
-                    </button>
                     <button
                       className={styles.editar}
                       onClick={() => abrirEditor(m)}

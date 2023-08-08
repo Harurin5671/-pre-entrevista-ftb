@@ -23,10 +23,10 @@ export default function Home() {
             skipEmptyLines: true,
           }}
         />
+        <TipoDeCambio />
         <div className={styles.csvDataSection}>
           <h2 className={styles.dataTitle}>CSV Data</h2>
         </div>
-        <TipoDeCambio />
         <Tabla data={csvData} setData={setCsvData} />
       </header>
     </div>

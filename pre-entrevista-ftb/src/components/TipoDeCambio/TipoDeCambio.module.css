@@ -1,19 +1,22 @@
 /* TipoDeCambio.module.css */
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
+.tipoCambioContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 *, *:before, *:after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  background: #105469;
-  font-family: 'Open Sans', sans-serif;
-}
-
 .title {
-  color: #fff;
+  margin-top: 10px;
+  color: #000;
   font-size: 1.5em;
   margin-bottom: 1em;
 }
