@@ -27,7 +27,7 @@ export default function Tabla({ data, setData }) {
 
       Promise.all(
         fechasUnicas.map((fecha, index) =>
-          new Promise((resolve) => setTimeout(resolve, index * 800))
+          new Promise((resolve) => setTimeout(resolve, index * 1000))
             .then(() =>
               axios.get(`http://localhost:3000/tipo-cambio-fecha/${fecha}`)
             )

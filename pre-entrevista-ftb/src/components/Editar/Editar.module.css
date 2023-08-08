@@ -57,10 +57,10 @@
   background: transparent;
 }
 
-.loginBox .userBox input[type='date']::-webkit-calendar-picker-indicator {
+/* .loginBox .userBox input[type='date']::-webkit-calendar-picker-indicator {
   filter: invert(1);
   opacity: 0.8;
-}
+} */
 
 .loginBox .userBox label {
   position: absolute;
