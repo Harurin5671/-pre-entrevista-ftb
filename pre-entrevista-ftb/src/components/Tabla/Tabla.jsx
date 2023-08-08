@@ -137,6 +137,7 @@ export default function Tabla({ data, setData }) {
                 <th>DESCRIPCIÓN</th>
                 <th>MONEDA</th>
                 <th>MONTO</th>
+                <th>CODIGO UNICO</th>
                 <th>ACCIONES</th>
               </tr>
             </thead>
@@ -151,6 +152,7 @@ export default function Tabla({ data, setData }) {
                       ? convertirAPen(m.moneda, m.monto, m.fecha)
                       : convertirAUsd(m.moneda, m.monto, m.fecha)}
                   </td>
+                  <td>{m.codigo_unico}</td>
                   <td>
                     <button
                       className={styles.editar}
