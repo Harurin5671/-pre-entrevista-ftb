@@ -18,9 +18,16 @@ export default function Tabla({ data, setData }) {
       const fechaHoy = new Date().toISOString().split('T')[0]
       fechas.push(fechaHoy)
 
+      const fechasUnicasObjeto = fechas.reduce((accumulator, fecha) => {
+        accumulator[fecha] = true
+        return accumulator
+      }, {})
+
+      const fechasUnicas = Object.keys(fechasUnicasObjeto)
+
       Promise.all(
-        fechas.map((fecha, index) =>
-          new Promise((resolve) => setTimeout(resolve, index * 800))
+        fechasUnicas.map((fecha, index) =>
+          new Promise((resolve) => setTimeout(resolve, index * 400))
             .then(() =>
               axios.get(`http://localhost:3000/tipo-cambio-fecha/${fecha}`)
             )
@@ -32,19 +39,7 @@ export default function Tabla({ data, setData }) {
       )
         .then((responses) => {
           setLoading(false)
-
-          const newCambioFecha = responses.reduce((accumulator, response) => {
-            const existingData = accumulator.find(
-              (item) => item.fecha === response.fecha
-            )
-
-            if (!existingData) {
-              accumulator.push(response)
-            }
-
-            return accumulator
-          }, [])
-          setCambioFecha(newCambioFecha)
+          setCambioFecha(responses) // Utilizamos directamente las respuestas
         })
         .catch((error) => {
           setLoading(false)
@@ -157,16 +152,24 @@ export default function Tabla({ data, setData }) {
                       : convertirAUsd(m.moneda, m.monto, m.fecha)}
                   </td>
                   <td>
-                    <button className={styles.editar} onClick={() => abrirEditor(m)}>Editar</button>
+                    <button
+                      className={styles.editar}
+                      onClick={() => abrirEditor(m)}
+                    >
+                      Editar
+                    </button>
                     {editar && editingData && (
-                    <Editar
-                      abrirEditor={editar}
-                      cerrarEditor={cerrarEditor}
-                      data={editingData}
-                      setData={setData}
-                    />
-                  )}
-                    <button className={styles.eliminar} onClick={() => eliminarCampo(m.codigo_unico)}>
+                      <Editar
+                        abrirEditor={editar}
+                        cerrarEditor={cerrarEditor}
+                        data={editingData}
+                        setData={setData}
+                      />
+                    )}
+                    <button
+                      className={styles.eliminar}
+                      onClick={() => eliminarCampo(m.codigo_unico)}
+                    >
                       Eliminar
                     </button>
                   </td>
