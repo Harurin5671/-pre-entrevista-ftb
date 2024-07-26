@@ -1,10 +1,25 @@
+@import '@fontsource-variable/onest';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  background: #105469;
-  font-family: 'Open Sans', sans-serif;
+html {
+  font-family: 'Onest Variable', system-ui, sans-serif;
+  scroll-behavior: smooth;
 }
+
+body {
+  color: '#000';
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overscroll-behavior: none;
+  background-color: #d9d9d9;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

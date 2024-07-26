@@ -20,7 +20,7 @@ const TipoDeCambio = () => {
 
   return (
     <div className={styles.tipoCambioContainer}>
-      <h2 className={styles.title}>Tipo de Cambio SUNAT</h2>
+      <h2 className="text-2xl">Tipo de Cambio SUNAT</h2>
       {loading ? (
         <p className={styles.loading}>Cargando tipo de cambio...</p>
       ) : (

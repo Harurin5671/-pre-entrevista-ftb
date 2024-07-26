@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Editar from '../Editar/Editar.jsx'
+import Modal from './Modal.jsx'
 import styles from './Tabla.module.css'
 
 export default function Tabla({ data, setData }) {
   const [USD, setUSD] = useState(true)
   const [editar, setEditar] = useState(false)
+  const [abrir, setAbrir] = useState(false)
   const [editingData, setEditingData] = useState(null)
   const [cambioFecha, setCambioFecha] = useState([])
   const [loading, setLoading] = useState(true)
@@ -60,8 +62,17 @@ export default function Tabla({ data, setData }) {
     setEditar(true)
   }
 
+  const abrirModal = (item) => {
+    setEditingData(item)
+    setAbrir(true)
+  }
+
   const cerrarEditor = () => {
     setEditar(false)
+  }
+
+  const cerrarModal = () => {
+    setAbrir(false)
   }
 
   const eliminarCampo = (codigo) => {
@@ -129,60 +140,64 @@ export default function Tabla({ data, setData }) {
   return (
     <>
       {data && data.length > 0 ? (
-        <>
-          <table className={styles.customTable}>
-            <thead>
+        <div className="overflow-x-auto flex flex-col justify-center items-center">
+          <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th>FECHA</th>
-                <th>DESCRIPCIÓN</th>
-                <th>MONEDA</th>
-                <th>MONTO</th>
-                <th>CODIGO UNICO</th>
-                <th>ACCIONES</th>
+                <th scope="col" className="px-6 py-3 text-[#E2B842]">FECHA</th>
+                <th scope="col" className="px-6 py-3 text-[#E2B842]">DESCRIPCIÓN</th>
+                <th scope="col" className="px-6 py-3 text-[#E2B842]">MONEDA</th>
+                <th scope="col" className="px-6 py-3 text-[#E2B842]">MONTO</th>
+                <th scope="col" className="px-6 py-3 text-[#E2B842]">CODIGO UNICO</th>
+                <th scope="col" className="px-16 py-3 text-[#E2B842]">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
               {data.map((m) => (
-                <tr key={m.codigo_unico}>
-                  <td>{m.fecha}</td>
-                  <td>{m.descripcion}</td>
-                  <td>{USD ? cambioMoneda(m.moneda) : m.moneda}</td>
-                  <td>
+                <tr key={m.codigo_unico} className="bg-red-200 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{m.fecha}</td>
+                  <td className="px-6 py-4">{m.descripcion}</td>
+                  <td className="px-6 py-4">{USD ? cambioMoneda(m.moneda) : m.moneda}</td>
+                  <td className="px-6 py-4">
                     {USD
                       ? convertirAPen(m.moneda, m.monto, m.fecha)
                       : convertirAUsd(m.moneda, m.monto, m.fecha)}
                   </td>
-                  <td>{m.codigo_unico}</td>
+                  <td className="px-6 py-4">{m.codigo_unico}</td>
                   <td>
-                    <button
-                      className={styles.editar}
-                      onClick={() => abrirEditor(m)}
-                    >
-                      Editar
+                    <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-none" type="button" onClick={() => abrirModal(m)}>
+                      <p className='text-white'>
+                        Editar
+                      </p>
                     </button>
-                    {editar && editingData && (
-                      <Editar
-                        abrirEditor={editar}
-                        cerrarEditor={cerrarEditor}
+                    {abrir && editingData && (
+                      <Modal
+                        abrirModal={abrir}
+                        cerrarModal={cerrarModal}
                         data={editingData}
                         setData={setData}
                       />
                     )}
                     <button
-                      className={styles.eliminar}
+                      data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                      className="border-none bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                       onClick={() => eliminarCampo(m.codigo_unico)}
                     >
-                      Eliminar
+                      <p className='text-white'>
+                        Eliminar
+                      </p>
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <button className={styles.downloadButton} onClick={descargarCSV}>
-            Descargar CSV
+          <button className=' mt-7 border-none bg-gradient-to-r from-[#E2B842] via-[rgb(226,184,60)] to-[rgb(226,184,66)] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-900 dark:focus:ring-red-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2' onClick={descargarCSV}>
+            <p className='text-black text-3xl'>
+              Descargar CSV
+            </p>
           </button>
-        </>
+        </div>
       ) : (
         <p className={styles.mensajeDataVacia}>
           Por favor, carga el archivo antes de mostrar la tabla.
